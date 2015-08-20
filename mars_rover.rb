@@ -1,9 +1,11 @@
 class Rover
 
 	def initialize(x_coordinate, y_coordinate, direction)
+		@compass = ["N", "E", "S", "W"]
 		@x_coordinate = x_coordinate
 		@y_coordinate = y_coordinate
-		@direction = direction
+		@compass.rotate!(@compass.index(direction))
+		@direction = @compass[0]
 	end
 
 	def status
@@ -36,29 +38,19 @@ class Rover
 	end
 
 	def turn(dir)
-		compass = ["N", "E", "S", "W"]
-		compass_pointer = compass.index(@direction)
-
 		if dir == "L"
-			compass_pointer -= 1
+			@compass.rotate!(-1)
 		elsif dir == "R"
-			compass_pointer += 1
+			@compass.rotate!(1)
 		end
 
-		if compass_pointer < 0
-			compass_pointer = 3
-		elsif compass_pointer > 3
-			compass_pointer = 0
-		end
-
-		@direction = compass[compass_pointer]
+		@direction = @compass[0]
 	end
 end
 
 class Plateau
 	@length
 	@width
-	@contents
 
 	def initialize(length, width)
 		@length = length
@@ -67,7 +59,6 @@ class Plateau
 
 	#outputs the location of objects on the plateau
 	def contents(x_coord, y_coord)
-
 	end
 
 	#checks to see if a movement will put a Rover off the board
