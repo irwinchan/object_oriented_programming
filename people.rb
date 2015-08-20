@@ -29,3 +29,8 @@ instructor_a.greet
 
 student_a = Student.new("Cristina")
 student_a.greet
+
+instructor_a.teach
+student_a.learn
+
+student_a.teach # This does not work because student_a is a Student object and the Student class does not have the teach method.
