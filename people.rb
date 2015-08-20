@@ -2,6 +2,12 @@
 
 # Exercise 1
 
+class Person
+	def initialize(name)
+		@name = name
+	end
+end
+
 class Student
 	def learn
 		puts "I get it!"
@@ -13,3 +19,4 @@ class Instructor
 		puts "Everything in Ruby is an Object"
 	end
 end
+
