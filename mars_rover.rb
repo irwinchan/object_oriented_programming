@@ -10,19 +10,23 @@ class Rover
 		@y_coordinate = y_coordinate.to_i
 		@compass.rotate!(@compass.index(direction))
 		@direction = @compass[0]
+		@instructions = []
 	end
 
 	def status
-		puts "#{@x_coordinate} #{@y_coordinate} #{@direction}"
+		"#{@x_coordinate} #{@y_coordinate} #{@direction}"
 	end
 
 	def to_s
 		status
 	end
 
-	def read_instruction(instructions)
-		movements_list = instructions.split("")
-		movements_list.each do |movement|
+	def read_instructions(instructions)
+		@instructions = instructions.split("")
+	end
+
+	def do_instructions
+		@instructions.each do |movement|
 			if movement == "L" || movement == "R"
 				turn(movement)
 			elsif movement == "M"
@@ -50,43 +54,46 @@ class Rover
 		elsif dir == "R"
 			@compass.rotate!(1)
 		end
-
 		@direction = @compass[0]
 	end
+
 end
 
+puts "Enter plateau size"
+		plateau_size = gets.chomp.split(" ") # sample input "5 5"
+		plateau_size.map!{|x| x.to_i}
+		mars = Plateau.new(*plateau_size)
 
-puts "Plateau size"
-plateau_size = gets.chomp.split(" ") # sample input "5 5"
+puts "Enter robot 1 starting position"
+robo1_start = gets.chomp.split(" ")
+# Check for valid starting position
+while mars.still_on?(robo1_start[0].to_i, robo1_start[1].to_i) == false do
+	puts "Coordinates are off the plateau, please enter new Coordinates"
+	robo_start = gets.chomp.split(" ")
+end
 
-plateau_size.map!{|x| x.to_i}
+robo1 = Rover.new(*robo1_start)
 
-mars = Plateau.new(*plateau_size)
-mars.status
+puts "Enter Instructions for Robot 1"
+instructions = gets.chomp
+robo1.read_instructions(instructions)
 
-#Check for valid starting position
+puts "Enter robot 2 starting position"
+robo_start = gets.chomp.split(" ")
+# Check for valid starting position
+while mars.still_on?(robo_start[0].to_i, robo_start[1].to_i) == false do
+	puts "Coordinates are off the plateau, please enter new Coordinates"
+	robo_start = gets.chomp.split(" ")
+end
+robo2 = Rover.new(*robo_start)
 
-	puts "Robo1 starting position"
-	robo1_start = gets.chomp.split(" ")
+puts "Enter Instructions for Robot 2"
+instructions = gets.chomp
+robo2.read_instructions(instructions)
 
-	while mars.still_on?(robo1_start[0].to_i,robo1_start[1].to_i) == false do
-		puts "Coordinates are off the plateau, please enter new Coordinates"
-		robo1_start = gets.chomp.split(" ")
-	end
+puts "Executing Instructions"
+robo1.do_instructions
+robo2.do_instructions
 
-	puts "the eagle has landed"
-
-# robo1 = Rover.new(1, 2, "N")
-# robo2 = Rover.new(3, 3, "E")
-
-# mars.add_object(robo1)
-# mars.add_object(robo2)
-
-# puts mars.contents.inspect
-
-
-# robo1.read_instruction("LMLMLMLMM")
-# robo2.read_instruction("MMRMMRMRRM")
-
-# robo1.status
-# robo2.status
+puts robo1
+puts robo2

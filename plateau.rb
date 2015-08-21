@@ -16,6 +16,8 @@ attr_reader :contents
 	def still_on?(x_coord, y_coord)
 		if x_coord < 0 || x_coord > @length || y_coord < 0 || y_coord > @width
 			false
+		else
+			true
 		end
 	end
 
