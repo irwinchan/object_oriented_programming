@@ -1,3 +1,5 @@
+require_relative 'plateau.rb'
+
 class Rover
 
 	attr_reader :x_coordinate, :y_coordinate
@@ -14,9 +16,12 @@ class Rover
 		puts "#{@x_coordinate} #{@y_coordinate} #{@direction}"
 	end
 
+	def to_s
+		status
+	end
+
 	def read_instruction(instructions)
 		movements_list = instructions.split("")
-
 		movements_list.each do |movement|
 			if movement == "L" || movement == "R"
 				turn(movement)
@@ -50,40 +55,6 @@ class Rover
 	end
 end
 
-class Plateau
-attr_reader :contents
-
-	def initialize(length, width)
-		@length = length
-		@width = width
-		@contents = []
-	end
-
-	#outputs the location of objects on the plateau
-	def add_object(obj)
-		@contents << obj
-	end
-
-	#checks to see if a movement will put a Rover off the board
-	def still_on?(x_coord, y_coord)
-		if x_coord < 0 || x_coord > @length || y_coord < 0 || y_coord > @width
-			false
-		end
-	end
-
-	def collide?(x_coord, y_coord)
-		@contents.each do |obj|
-			if x_coord == obj.x_coordinate && y_coord == obj.y_coordinate
-				true
-			end
-		end
-	end
-
-	def status
-		puts "#{@length} #{@width}"
-	end
-
-end
 
 puts "Plateau size"
 plateau_size = gets.chomp.split(" ") # sample input "5 5"
@@ -92,8 +63,6 @@ plateau_size.map!{|x| x.to_i}
 
 mars = Plateau.new(*plateau_size)
 mars.status
-
-
 
 #Check for valid starting position
 
